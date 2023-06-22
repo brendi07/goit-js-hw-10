@@ -15,8 +15,11 @@ fetchBreeds()
       const murkup = `<option value=${id}>${name}</option>`;
       select.innerHTML += murkup;
     });
+    select.classList.remove('hidden');
+    addHiden();
   })
   .catch(er => {
+     select.classList.add('hidden');
     Notify.failure(error.textContent);
   });
 
@@ -25,16 +28,16 @@ select.addEventListener('click', onSelection);
 
 function onSelection(event) {
   event.preventDefault();
-  select.classList.add('hidden');
+
   removeHiden();
-  error.classList.add('hidden');
 
   const breedId = event.currentTarget.value;
   fetchCatByBreed(breedId)
     .then(data => {
+      addHiden();
       const { name, description, temperament } = data[0].breeds[0];
       const photo = data[0].url;
-      return (catInfo.innerHTML = cardMarkup(
+      (catInfo.innerHTML = cardMarkup(
         photo,
         name,
         temperament,
@@ -42,12 +45,12 @@ function onSelection(event) {
       ));
     })
     .catch(er => {
-         Notify.failure(error.textContent);
+      Notify.failure(error.textContent);
+      select.classList.add('hidden');
     });
 
     select.classList.remove('hidden');
-  addHiden();
-   error.classList.add('hidden');
+
 }
 
 function cardMarkup(photo, name, temperament, description) {
