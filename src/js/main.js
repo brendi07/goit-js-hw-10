@@ -28,13 +28,14 @@ select.addEventListener('click', onSelection);
 
 function onSelection(event) {
   event.preventDefault();
-
+ catInfo.classList.add('hidden')
   removeHiden();
 
   const breedId = event.currentTarget.value;
   fetchCatByBreed(breedId)
     .then(data => {
       addHiden();
+      catInfo.classList.remove('hidden')
       const { name, description, temperament } = data[0].breeds[0];
       const photo = data[0].url;
       (catInfo.innerHTML = cardMarkup(
@@ -49,7 +50,8 @@ function onSelection(event) {
       select.classList.add('hidden');
     });
 
-    select.classList.remove('hidden');
+  select.classList.remove('hidden');
+
 
 }
 
